@@ -14,20 +14,23 @@
         }
 
         :root {
-            --primary: #2c3e50;
-            --secondary: #e74c3c;
-            --accent: #3498db;
-            --success: #27ae60;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #1a252f;
+            /* Professional, muted palette */
+            --primary: #1f2937;   /* slate-800 */
+            --secondary: #334155; /* slate-700 */
+            --accent: #2563eb;    /* blue-600 */
+            --success: #16a34a;   /* green-600 */
+            --warning: #f59e0b;   /* amber-500 */
+            --danger: #dc2626;    /* red-600 */
+            --light: #f1f5f9;     /* slate-100 */
+            --muted: #e2e8f0;     /* slate-200 */
+            --dark: #0f172a;      /* slate-900 */
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: var(--primary);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
             min-height: 100vh;
         }
 
@@ -109,13 +112,18 @@
             padding: 1rem 1.5rem;
             color: white;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
             border-bottom: 3px solid transparent;
         }
 
         nav a:hover {
-            background: var(--accent);
-            border-bottom-color: var(--warning);
+            background: rgba(255, 255, 255, 0.06);
+            border-bottom-color: var(--accent);
+        }
+
+        nav a.active {
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom-color: var(--accent);
         }
 
         .content {
@@ -162,16 +170,19 @@
         }
 
         .metric-card {
-            background: linear-gradient(135deg, var(--accent) 0%, #5dade2 100%);
-            color: white;
-            padding: 2rem;
+            background: #ffffff;
+            color: var(--primary);
+            padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
+            border: 1px solid var(--muted);
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .metric-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
         }
 
         .metric-card h4 {
@@ -181,21 +192,14 @@
         }
 
         .metric-card .value {
-            font-size: 2.5rem;
-            font-weight: bold;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark);
         }
 
-        .metric-card.success {
-            background: linear-gradient(135deg, var(--success) 0%, #52be80 100%);
-        }
-
-        .metric-card.warning {
-            background: linear-gradient(135deg, var(--warning) 0%, #f8c471 100%);
-        }
-
-        .metric-card.danger {
-            background: linear-gradient(135deg, var(--secondary) 0%, #ec7063 100%);
-        }
+        .metric-card.success { border-left-color: var(--success); }
+        .metric-card.warning { border-left-color: var(--warning); }
+        .metric-card.danger { border-left-color: var(--danger); }
 
         .architecture {
             background: var(--light);
@@ -208,8 +212,9 @@
             background: white;
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             margin: 2rem 0;
+            border: 1px solid var(--muted);
         }
 
         .mermaid {
@@ -228,21 +233,22 @@
 
         .feature-card {
             background: white;
-            border: 2px solid var(--light);
+            border: 1px solid var(--muted);
             border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s;
+            padding: 1.5rem;
+            transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
         }
 
         .feature-card:hover {
             border-color: var(--accent);
-            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+            transform: translateY(-2px);
         }
 
         .feature-card h4 {
-            color: var(--accent);
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
         }
 
         .feature-card ul {
@@ -293,13 +299,14 @@
             border-collapse: collapse;
             margin: 2rem 0;
             background: white;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             border-radius: 8px;
             overflow: hidden;
+            border: 1px solid var(--muted);
         }
 
         thead {
-            background: var(--primary);
+            background: var(--secondary);
             color: white;
         }
 
@@ -311,50 +318,35 @@
         }
 
         tbody tr:hover {
-            background: var(--light);
+            background: #f8fafc;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            padding: 0.25rem 0.6rem;
+            border-radius: 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        .status-badge.critical {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .status-badge.high {
-            background: var(--warning);
-            color: white;
-        }
-
-        .status-badge.medium {
-            background: var(--accent);
-            color: white;
-        }
-
-        .status-badge.low {
-            background: var(--success);
-            color: white;
-        }
+        .status-badge.critical { background: rgba(220,38,38,0.12); color: #b91c1c; }
+        .status-badge.high { background: rgba(245,158,11,0.16); color: #b45309; }
+        .status-badge.medium { background: rgba(37,99,235,0.14); color: #1d4ed8; }
+        .status-badge.low { background: rgba(22,163,74,0.14); color: #15803d; }
 
         .code-block {
             background: var(--dark);
-            color: #0f0;
-            padding: 1.5rem;
+            color: #e5e7eb;
+            padding: 1.25rem;
             border-radius: 8px;
             overflow-x: auto;
             margin: 1rem 0;
             font-family: 'Courier New', monospace;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.35);
         }
 
         .highlight-box {
-            background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
+            background: #fff7ed; /* soft amber tint */
             border-left: 5px solid var(--warning);
             padding: 1.5rem;
             margin: 1.5rem 0;
@@ -400,21 +392,21 @@
 
         .button {
             display: inline-block;
-            padding: 0.8rem 2rem;
+            padding: 0.7rem 1.4rem;
             background: var(--accent);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            transition: all 0.3s;
+            border-radius: 6px;
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .button:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: #1d4ed8; /* slightly darker accent */
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
         }
 
         .section-intro {
@@ -423,34 +415,58 @@
             margin-bottom: 2rem;
             line-height: 1.8;
         }
+
+        /* Language switcher */
+        .lang-switcher {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            padding: 0 0.5rem;
+        }
+        .lang-switcher .button.small {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.9rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.4);
+            margin: 0.4rem 0.3rem;
+        }
+        .lang-switcher .button.small.active {
+            background: var(--warning);
+            color: #1a1a1a;
+            border-color: var(--warning);
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1>🍜 Udon System</h1>
-            <p>Smart Noodle Machine with AI Orchestration</p>
-            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">ROS 2 + CANopen + STM32 Integration</p>
+            <h1 data-i18n="header_title">🍜 Udon System</h1>
+            <p data-i18n="header_subtitle">Smart Noodle Machine with AI Orchestration</p>
+            <p data-i18n="header_ros" style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">ROS 2 + CANopen + STM32 Integration</p>
         </header>
 
         <nav>
             <ul>
-                <li><a href="#overview">Overview</a></li>
-                <li><a href="#metrics">Key Metrics</a></li>
-                <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#flow">Order Flow</a></li>
-                <li><a href="#stations">Station Control</a></li>
-                <li><a href="#safety">Safety</a></li>
-                <li><a href="#next-steps">Next Steps</a></li>
+                <li><a href="#overview" data-i18n="nav_overview">Overview</a></li>
+                <li><a href="#metrics" data-i18n="nav_metrics">Key Metrics</a></li>
+                <li><a href="#architecture" data-i18n="nav_architecture">Architecture</a></li>
+                <li><a href="#flow" data-i18n="nav_flow">Order Flow</a></li>
+                <li><a href="#stations" data-i18n="nav_stations">Station Control</a></li>
+                <li><a href="#safety" data-i18n="nav_safety">Safety</a></li>
+                <li><a href="#next-steps" data-i18n="nav_next">Next Steps</a></li>
+                <li class="lang-switcher">
+                    <button id="lang-en" class="button small" aria-label="Switch to English">EN</button>
+                    <button id="lang-ko" class="button small" aria-label="한국어로 전환">KO</button>
+                </li>
             </ul>
         </nav>
 
         <div class="content">
             <!-- EXECUTIVE SUMMARY -->
             <section id="overview">
-                <h2>Executive Summary</h2>
-                <p class="section-intro">
+                <h2 data-i18n="overview_title">Executive Summary</h2>
+                <p class="section-intro" data-i18n="overview_intro">
                     The Udon System is an end-to-end smart noodle machine that combines AI-powered ordering,
                     industrial automation, and real-time quality control to deliver consistent, high-quality
                     meals in under 3 minutes.
@@ -510,8 +526,8 @@
 
             <!-- KEY METRICS -->
             <section id="metrics">
-                <h2>Performance Targets</h2>
-                <p class="section-intro">
+                <h2 data-i18n="metrics_title">Performance Targets</h2>
+                <p class="section-intro" data-i18n="metrics_intro">
                     All system components are designed with strict timing and reliability requirements
                     to ensure consistent customer experience.
                 </p>
@@ -580,8 +596,8 @@
 
             <!-- ARCHITECTURE -->
             <section id="architecture">
-                <h2>System Architecture</h2>
-                <p class="section-intro">
+                <h2 data-i18n="architecture_title">System Architecture</h2>
+                <p class="section-intro" data-i18n="architecture_intro">
                     The system follows a layered architecture with clear separation between customer-facing
                     channels, business logic, and hardware control layers.
                 </p>
@@ -650,7 +666,7 @@
 
                 <div class="grid-2">
                     <div>
-                        <h3>Communication Protocols</h3>
+                        <h3 data-i18n="comm_protocols_title">Communication Protocols</h3>
                         <div class="timeline-item">
                             <strong>CAN Bus:</strong> 500 kbps (scalable to 1 Mbps), CANopen CiA 301
                         </div>
@@ -663,7 +679,7 @@
                     </div>
 
                     <div>
-                        <h3>Station Components</h3>
+                        <h3 data-i18n="station_components_title">Station Components</h3>
                         <div class="timeline-item">
                             <strong>Dispenser:</strong> Noodle & soup portion control
                         </div>
@@ -685,8 +701,8 @@
 
             <!-- ORDER FLOW -->
             <section id="flow">
-                <h2>Complete Order Flow</h2>
-                <p class="section-intro">
+                <h2 data-i18n="flow_title">Complete Order Flow</h2>
+                <p class="section-intro" data-i18n="flow_intro">
                     From customer order to pickup notification, the entire process is orchestrated
                     with redundancy, fault recovery, and quality checks at every step.
                 </p>
@@ -734,7 +750,7 @@
                     </div>
                 </div>
 
-                <h3>Detailed Timing Breakdown</h3>
+                <h3 data-i18n="flow_timing_title">Detailed Timing Breakdown</h3>
                 <div class="timeline">
                     <div class="timeline-item">
                         <strong>t+0s:</strong> Order received from customer channel
@@ -768,8 +784,8 @@
 
             <!-- STATION CONTROL -->
             <section id="stations">
-                <h2>Station State Management</h2>
-                <p class="section-intro">
+                <h2 data-i18n="stations_title">Station State Management</h2>
+                <p class="section-intro" data-i18n="stations_intro">
                     Each STM32-based station follows a strict state machine with safety interlocks
                     and fault recovery paths.
                 </p>
@@ -790,8 +806,8 @@
                     </div>
                 </div>
 
-                <h3>CANopen PDO Mapping</h3>
-                <p>Process Data Objects (PDOs) enable real-time, low-latency communication between the orchestrator and
+                <h3 data-i18n="pdo_title">CANopen PDO Mapping</h3>
+                <p data-i18n="pdo_intro">Process Data Objects (PDOs) enable real-time, low-latency communication between the orchestrator and
                     station controllers.</p>
 
                 <table>
@@ -841,8 +857,8 @@
 
             <!-- ORCHESTRATOR -->
             <section id="orchestrator">
-                <h2>ROS 2 Orchestrator Job Lifecycle</h2>
-                <p class="section-intro">
+                <h2 data-i18n="orchestrator_title">ROS 2 Orchestrator Job Lifecycle</h2>
+                <p class="section-intro" data-i18n="orchestrator_intro">
                     The orchestrator manages job allocation, resource reservation, and failure recovery
                     using behavior trees and state machines.
                 </p>
@@ -866,7 +882,7 @@
                     </div>
                 </div>
 
-                <h3>Key ROS 2 Nodes</h3>
+                <h3 data-i18n="ros_nodes_title">Key ROS 2 Nodes</h3>
                 <div class="features">
                     <div class="feature-card">
                         <h4>order_manager</h4>
@@ -908,8 +924,8 @@
 
             <!-- COOKING SEQUENCE -->
             <section id="sequence">
-                <h2>Detailed Cooking Sequence</h2>
-                <p class="section-intro">
+                <h2 data-i18n="sequence_title">Detailed Cooking Sequence</h2>
+                <p class="section-intro" data-i18n="sequence_intro">
                     Step-by-step message exchange between orchestrator and station controllers
                     during a typical order execution.
                 </p>
@@ -955,8 +971,8 @@
 
             <!-- FAULT RECOVERY -->
             <section id="faults">
-                <h2>Fault Detection & Recovery</h2>
-                <p class="section-intro">
+                <h2 data-i18n="faults_title">Fault Detection & Recovery</h2>
+                <p class="section-intro" data-i18n="faults_intro">
                     Comprehensive fault handling ensures system resilience and customer safety.
                 </p>
 
@@ -991,7 +1007,7 @@
                     </div>
                 </div>
 
-                <h3>Fault Categories & Response Times</h3>
+                <h3 data-i18n="fault_table_title">Fault Categories & Response Times</h3>
                 <table>
                     <thead>
                         <tr>
@@ -1032,8 +1048,8 @@
 
             <!-- INVENTORY -->
             <section id="inventory">
-                <h2>Inventory Management</h2>
-                <p class="section-intro">
+                <h2 data-i18n="inventory_title">Inventory Management</h2>
+                <p class="section-intro" data-i18n="inventory_intro">
                     Real-time tracking and automatic refill alerts ensure uninterrupted operations.
                 </p>
 
@@ -1055,7 +1071,7 @@
                     </div>
                 </div>
 
-                <h3>Tracked Inventory Items</h3>
+                <h3 data-i18n="tracked_items_title">Tracked Inventory Items</h3>
                 <div class="metrics">
                     <div class="metric-card">
                         <h4>Noodles</h4>
@@ -1082,8 +1098,8 @@
 
             <!-- QUALITY & LEARNING -->
             <section id="quality">
-                <h2>Quality Feedback & Learning</h2>
-                <p class="section-intro">
+                <h2 data-i18n="quality_title">Quality Feedback & Learning</h2>
+                <p class="section-intro" data-i18n="quality_intro">
                     Customer feedback drives continuous improvement through adaptive parameter tuning.
                 </p>
 
@@ -1108,7 +1124,7 @@
                     </div>
                 </div>
 
-                <h3>Feedback Categories</h3>
+                <h3 data-i18n="feedback_categories_title">Feedback Categories</h3>
                 <div class="grid-2">
                     <div>
                         <h4>Ratings (1-5 Stars)</h4>
@@ -1162,7 +1178,7 @@
                     </div>
                 </div>
 
-                <h3>Tunable Parameters</h3>
+                <h3 data-i18n="tunable_params_title">Tunable Parameters</h3>
                 <table>
                     <thead>
                         <tr>
@@ -1203,8 +1219,8 @@
 
             <!-- SAFETY -->
             <section id="safety">
-                <h2>Safety & Security</h2>
-                <p class="section-intro">
+                <h2 data-i18n="safety_title">Safety & Security</h2>
+                <p class="section-intro" data-i18n="safety_intro">
                     Multi-layered safety systems protect operators, customers, and equipment.
                 </p>
 
@@ -1251,15 +1267,15 @@
 
             <!-- OBSERVABILITY -->
             <section id="observability">
-                <h2>Telemetry & Observability</h2>
-                <p class="section-intro">
+                <h2 data-i18n="observability_title">Telemetry & Observability</h2>
+                <p class="section-intro" data-i18n="observability_intro">
                     Comprehensive monitoring enables proactive maintenance and continuous optimization.
                 </p>
 
-                <h3>Collected Metrics</h3>
+                <h3 data-i18n="collected_metrics_title">Collected Metrics</h3>
                 <div class="grid-2">
                     <div>
-                        <h4>Per-Station Metrics</h4>
+                        <h4 data-i18n="per_station_metrics_title">Per-Station Metrics</h4>
                         <ul style="list-style: none; padding-left: 0;">
                             <li
                                 style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
@@ -1284,7 +1300,7 @@
                         </ul>
                     </div>
                     <div>
-                        <h4>Per-Job Metrics</h4>
+                        <h4 data-i18n="per_job_metrics_title">Per-Job Metrics</h4>
                         <ul style="list-style: none; padding-left: 0;">
                             <li
                                 style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
@@ -1310,7 +1326,7 @@
                     </div>
                 </div>
 
-                <h3>Monitoring Stack</h3>
+                <h3 data-i18n="monitoring_stack_title">Monitoring Stack</h3>
                 <table>
                     <thead>
                         <tr>
@@ -1351,14 +1367,14 @@
 
             <!-- DEPLOYMENT -->
             <section id="deployment">
-                <h2>Deployment Architecture</h2>
-                <p class="section-intro">
+                <h2 data-i18n="deployment_title">Deployment Architecture</h2>
+                <p class="section-intro" data-i18n="deployment_intro">
                     Production-ready deployment with separation between staging and production environments.
                 </p>
 
                 <div class="grid-2">
                     <div>
-                        <h3>Edge Computing</h3>
+                        <h3 data-i18n="edge_computing_title">Edge Computing</h3>
                         <div class="timeline-item">
                             <strong>Hardware:</strong> Industrial PC or NVIDIA Jetson
                         </div>
@@ -1374,7 +1390,7 @@
                     </div>
 
                     <div>
-                        <h3>MCU Deployment</h3>
+                        <h3 data-i18n="mcu_deployment_title">MCU Deployment</h3>
                         <div class="timeline-item">
                             <strong>Platform:</strong> STM32F4/F7 + FreeRTOS
                         </div>
@@ -1390,7 +1406,7 @@
                     </div>
                 </div>
 
-                <h3>Environment Strategy</h3>
+                <h3 data-i18n="env_strategy_title">Environment Strategy</h3>
                 <table>
                     <thead>
                         <tr>
@@ -1421,8 +1437,8 @@
 
             <!-- ACCEPTANCE CRITERIA -->
             <section id="acceptance">
-                <h2>Go/No-Go Acceptance Criteria</h2>
-                <p class="section-intro">
+                <h2 data-i18n="acceptance_title">Go/No-Go Acceptance Criteria</h2>
+                <p class="section-intro" data-i18n="acceptance_intro">
                     The system must meet all critical criteria before production deployment.
                 </p>
 
@@ -1490,8 +1506,8 @@
 
             <!-- NEXT STEPS -->
             <section id="next-steps">
-                <h2>Next Steps & Deliverables</h2>
-                <p class="section-intro">
+                <h2 data-i18n="next_steps_title">Next Steps & Deliverables</h2>
+                <p class="section-intro" data-i18n="next_steps_intro">
                     Recommended artifacts for immediate implementation and testing.
                 </p>
 
@@ -1542,10 +1558,11 @@
         </div>
 
         <footer>
-            <p>&copy; 2025 Udon System Project | ROS 2 + CANopen Integration</p>
+            <p data-i18n="footer_copy">&copy; 2025 Udon System Project | ROS 2 + CANopen Integration</p>
         </footer>
     </div>
 
+    <script src="i18n.js"></script>
     <script>
         mermaid.initialize({
             startOnLoad: true,
@@ -1609,6 +1626,13 @@
                     link.classList.add('active');
                 }
             });
+        });
+
+        // Initialize i18n after DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initI18n === 'function') {
+                initI18n();
+            }
         });
     </script>
 </body>
