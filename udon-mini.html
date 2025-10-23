@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udon System - Smart Noodle Machine</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        nav {
+            background: var(--primary);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav a:hover {
+            background: var(--accent);
+            border-bottom-color: var(--warning);
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+            display: inline-block;
+        }
+
+        h3 {
+            color: var(--accent);
+            font-size: 1.6rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--accent) 0%, #5dade2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-card h4 {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .metric-card.success {
+            background: linear-gradient(135deg, var(--success) 0%, #52be80 100%);
+        }
+
+        .metric-card.warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #f8c471 100%);
+        }
+
+        .metric-card.danger {
+            background: linear-gradient(135deg, var(--secondary) 0%, #ec7063 100%);
+        }
+
+        .architecture {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent);
+        }
+
+        .flow-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .mermaid {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid var(--light);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .feature-card h4 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-card li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-item {
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            background: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item strong {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+
+        tbody tr:hover {
+            background: var(--light);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .status-badge.critical {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .status-badge.high {
+            background: var(--warning);
+            color: white;
+        }
+
+        .status-badge.medium {
+            background: var(--accent);
+            color: white;
+        }
+
+        .status-badge.low {
+            background: var(--success);
+            color: white;
+        }
+
+        .code-block {
+            background: var(--dark);
+            color: #0f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
+            border-left: 5px solid var(--warning);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box strong {
+            color: var(--warning);
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .button {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .button:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-intro {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🍜 Udon System</h1>
+            <p>Smart Noodle Machine with AI Orchestration</p>
+            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.8;">ROS 2 + CANopen + STM32 Integration</p>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#metrics">Key Metrics</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#flow">Order Flow</a></li>
+                <li><a href="#stations">Station Control</a></li>
+                <li><a href="#safety">Safety</a></li>
+                <li><a href="#next-steps">Next Steps</a></li>
+            </ul>
+        </nav>
+
+        <div class="content">
+            <!-- EXECUTIVE SUMMARY -->
+            <section id="overview">
+                <h2>Executive Summary</h2>
+                <p class="section-intro">
+                    The Udon System is an end-to-end smart noodle machine that combines AI-powered ordering,
+                    industrial automation, and real-time quality control to deliver consistent, high-quality
+                    meals in under 3 minutes.
+                </p>
+
+                <div class="metrics">
+                    <div class="metric-card success">
+                        <h4>Target Order Time</h4>
+                        <div class="value">&lt; 3 min</div>
+                    </div>
+                    <div class="metric-card success">
+                        <h4>Success Rate</h4>
+                        <div class="value">&gt; 95%</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Control Loop</h4>
+                        <div class="value">10-20 Hz</div>
+                    </div>
+                    <div class="metric-card warning">
+                        <h4>Safety Halt</h4>
+                        <div class="value">≤ 200 ms</div>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <h4>🤖 AI Ordering Channels</h4>
+                        <ul>
+                            <li>Voice chatbot (KakaoTalk, WhatsApp)</li>
+                            <li>Call center with STT/NLU</li>
+                            <li>HMI/Kiosk interface</li>
+                            <li>Real-time payment processing</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>⚙️ Industrial Control</h4>
+                        <ul>
+                            <li>ROS 2 Humble orchestration</li>
+                            <li>CANopen protocol (CiA 301)</li>
+                            <li>STM32 station controllers</li>
+                            <li>Deterministic real-time control</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>📊 Quality & Learning</h4>
+                        <ul>
+                            <li>Customer feedback loop</li>
+                            <li>Adaptive parameter tuning</li>
+                            <li>A/B testing for recipes</li>
+                            <li>Telemetry & analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KEY METRICS -->
+            <section id="metrics">
+                <h2>Performance Targets</h2>
+                <p class="section-intro">
+                    All system components are designed with strict timing and reliability requirements
+                    to ensure consistent customer experience.
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Metric</th>
+                            <th>Target</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Order Processing</td>
+                            <td>Parse & Validate</td>
+                            <td>≤ 1.0 s</td>
+                            <td><span class="status-badge high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payment Gateway</td>
+                            <td>Confirmation Time</td>
+                            <td>≤ 3.0 s</td>
+                            <td><span class="status-badge medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td>Station Readiness</td>
+                            <td>Health Check</td>
+                            <td>≤ 500 ms</td>
+                            <td><span class="status-badge critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td>Heartbeat Monitor</td>
+                            <td>TPDO Interval</td>
+                            <td>1,000 ms</td>
+                            <td><span class="status-badge critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td>E-Stop Response</td>
+                            <td>Safe Halt Time</td>
+                            <td>≤ 200 ms</td>
+                            <td><span class="status-badge critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td>Cooking Duration</td>
+                            <td>Recipe Tolerance</td>
+                            <td>±3%</td>
+                            <td><span class="status-badge high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>Inventory Alert</td>
+                            <td>Low Threshold</td>
+                            <td>≤ 5 s</td>
+                            <td><span class="status-badge medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td>End-to-End</td>
+                            <td>Order to Pickup</td>
+                            <td>&lt; 3 min</td>
+                            <td><span class="status-badge critical">Critical</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ARCHITECTURE -->
+            <section id="architecture">
+                <h2>System Architecture</h2>
+                <p class="section-intro">
+                    The system follows a layered architecture with clear separation between customer-facing
+                    channels, business logic, and hardware control layers.
+                </p>
+
+                <div class="architecture">
+                    <h3>Layer Overview</h3>
+                    <div class="flow-container">
+                        <div class="mermaid">
+                            graph TB
+                            subgraph Customer Layer
+                            A[Customer Interface]
+                            B[AI Chatbot]
+                            C[Call Agent]
+                            D[Kiosk/HMI]
+                            end
+
+                            subgraph Business Layer
+                            E[Order API]
+                            F[Payment Gateway]
+                            G[Order Database]
+                            H[Notification Service]
+                            end
+
+                            subgraph Orchestration Layer
+                            I[ROS 2 Orchestrator]
+                            J[Inventory Service]
+                            K[Quality Monitor]
+                            L[Telemetry Logger]
+                            end
+
+                            subgraph Control Layer
+                            M[CANopen Bus]
+                            N[Dispenser STM32]
+                            O[Lift STM32]
+                            P[Conveyor STM32]
+                            Q[Boiler STM32]
+                            R[Delivery STM32]
+                            end
+
+                            A --> B
+                            A --> C
+                            A --> D
+                            B --> E
+                            C --> E
+                            D --> E
+                            E --> F
+                            F --> G
+                            G --> I
+                            E --> H
+                            I --> J
+                            I --> K
+                            I --> L
+                            I --> M
+                            M --> N
+                            M --> O
+                            M --> P
+                            M --> Q
+                            M --> R
+
+                            style A fill:#3498db,color:#fff
+                            style I fill:#e74c3c,color:#fff
+                            style M fill:#f39c12,color:#fff
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <h3>Communication Protocols</h3>
+                        <div class="timeline-item">
+                            <strong>CAN Bus:</strong> 500 kbps (scalable to 1 Mbps), CANopen CiA 301
+                        </div>
+                        <div class="timeline-item">
+                            <strong>ROS 2:</strong> Humble distribution, DDS middleware
+                        </div>
+                        <div class="timeline-item">
+                            <strong>APIs:</strong> REST for orders, WebSocket for real-time updates
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Station Components</h3>
+                        <div class="timeline-item">
+                            <strong>Dispenser:</strong> Noodle & soup portion control
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Lift/Basket:</strong> Cooking basket automation
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Conveyor:</strong> Bowl positioning & transport
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Boiler:</strong> Temperature & timing control
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Delivery:</strong> Pickup window management
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ORDER FLOW -->
+            <section id="flow">
+                <h2>Complete Order Flow</h2>
+                <p class="section-intro">
+                    From customer order to pickup notification, the entire process is orchestrated
+                    with redundancy, fault recovery, and quality checks at every step.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        flowchart TD
+                        A[Customer Order] --> B{Channel Selection}
+                        B -->|Chatbot| C1[AI Parse Order]
+                        B -->|Call| C2[STT + NLU]
+                        B -->|Kiosk| C3[UI Selection]
+
+                        C1 --> D[Validate & Price]
+                        C2 --> D
+                        C3 --> D
+
+                        D --> E{Payment Status}
+                        E -->|Success| F[Create Order Record]
+                        E -->|Fail| E1[Retry/Cancel + Notify]
+                        E1 -.-> D
+
+                        F --> G[Orchestrator Creates Job]
+                        G --> H[Reserve Resources]
+
+                        H --> I{Stations Ready?}
+                        I -->|Yes| J[Start Cook Sequence]
+                        I -->|No| I1[Queue/Reassign]
+                        I1 -.-> H
+
+                        J --> K[Monitor Progress]
+                        K --> L{Quality OK?}
+                        L -->|Yes| M[Complete & Plate]
+                        L -->|No| L1[Adjust Parameters]
+                        L1 -.-> K
+
+                        M --> N[Notify Pickup]
+                        N --> O[Request Feedback]
+                        O --> P[Update Learning Model]
+
+                        style F fill:#27ae60,color:#fff
+                        style J fill:#3498db,color:#fff
+                        style M fill:#27ae60,color:#fff
+                        style E1 fill:#e74c3c,color:#fff
+                        style I1 fill:#f39c12,color:#fff
+                    </div>
+                </div>
+
+                <h3>Detailed Timing Breakdown</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>t+0s:</strong> Order received from customer channel
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+1s:</strong> Order validated and priced
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+4s:</strong> Payment confirmed, order in DB
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+5s:</strong> Job created, stations allocated
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+10s:</strong> Boiler reaches target temp
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+15s:</strong> Bowl placed, noodles dispensed
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+45s:</strong> Cooking in progress (monitored)
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+150s:</strong> Soup added, ready for pickup
+                    </div>
+                    <div class="timeline-item">
+                        <strong>t+180s:</strong> Customer notified, order complete
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATION CONTROL -->
+            <section id="stations">
+                <h2>Station State Management</h2>
+                <p class="section-intro">
+                    Each STM32-based station follows a strict state machine with safety interlocks
+                    and fault recovery paths.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        stateDiagram-v2
+                        [*] --> INIT
+                        INIT --> PREOP: NMT Start
+                        PREOP --> SAFE_STOP: E-Stop
+                        PREOP --> READY: All Systems OK
+                        READY --> BUSY: Command Received
+                        BUSY --> READY: Cycle Complete
+                        BUSY --> FAULT: Error Detected
+                        FAULT --> SAFE_STOP: Critical
+                        SAFE_STOP --> INIT: Manual Reset
+                        READY --> [*]: Shutdown
+                    </div>
+                </div>
+
+                <h3>CANopen PDO Mapping</h3>
+                <p>Process Data Objects (PDOs) enable real-time, low-latency communication between the orchestrator and
+                    station controllers.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PDO Type</th>
+                            <th>COB-ID</th>
+                            <th>Data Fields</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TPDO1 (Transmit)</td>
+                            <td>0x180 + Node ID</td>
+                            <td>Statusword, Position, Sensors</td>
+                            <td>Station → Orchestrator status</td>
+                        </tr>
+                        <tr>
+                            <td>RPDO1 (Receive)</td>
+                            <td>0x200 + Node ID</td>
+                            <td>Controlword, Target Position</td>
+                            <td>Orchestrator → Station commands</td>
+                        </tr>
+                        <tr>
+                            <td>EMCY (Emergency)</td>
+                            <td>0x080 + Node ID</td>
+                            <td>Error Code, Register, Data</td>
+                            <td>Fault notification</td>
+                        </tr>
+                        <tr>
+                            <td>Heartbeat</td>
+                            <td>0x700 + Node ID</td>
+                            <td>State Byte</td>
+                            <td>Liveness check (1 Hz)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <strong>Critical Safety Feature:</strong> If a station misses 3 consecutive heartbeats
+                    (3 seconds), the orchestrator marks it as DOWN and either reassigns the job or triggers
+                    a safe shutdown sequence. Hardware E-stop cuts power to all motion and heating elements
+                    within 200ms.
+                </div>
+            </section>
+
+            <!-- ORCHESTRATOR -->
+            <section id="orchestrator">
+                <h2>ROS 2 Orchestrator Job Lifecycle</h2>
+                <p class="section-intro">
+                    The orchestrator manages job allocation, resource reservation, and failure recovery
+                    using behavior trees and state machines.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        stateDiagram-v2
+                        [*] --> QUEUED
+                        QUEUED --> ALLOCATING: Check Resources
+                        ALLOCATING --> READY: All Allocated
+                        ALLOCATING --> BLOCKED: Resource Unavailable
+                        BLOCKED --> QUEUED: Retry After Delay
+                        READY --> RUNNING: Start Execution
+                        RUNNING --> ADJUSTING: Quality Feedback
+                        ADJUSTING --> RUNNING: Parameters Updated
+                        RUNNING --> COMPLETED: Success
+                        RUNNING --> FAILED: Fault/Timeout
+                        FAILED --> ABORTED: Max Retries
+                        COMPLETED --> [*]
+                        ABORTED --> [*]
+                    </div>
+                </div>
+
+                <h3>Key ROS 2 Nodes</h3>
+                <div class="features">
+                    <div class="feature-card">
+                        <h4>order_manager</h4>
+                        <ul>
+                            <li>Receives orders from API</li>
+                            <li>Creates job definitions</li>
+                            <li>Assigns recipes & parameters</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>station_coordinator</h4>
+                        <ul>
+                            <li>BehaviorTree execution</li>
+                            <li>Sequences cooking steps</li>
+                            <li>Monitors station health</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>inventory_core</h4>
+                        <ul>
+                            <li>Tracks ingredient levels</li>
+                            <li>Enforces reservations</li>
+                            <li>Triggers refill alerts</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>quality_monitor</h4>
+                        <ul>
+                            <li>Aggregates customer feedback</li>
+                            <li>Updates recipe parameters</li>
+                            <li>A/B testing framework</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COOKING SEQUENCE -->
+            <section id="sequence">
+                <h2>Detailed Cooking Sequence</h2>
+                <p class="section-intro">
+                    Step-by-step message exchange between orchestrator and station controllers
+                    during a typical order execution.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        sequenceDiagram
+                        participant C as Customer
+                        participant AI as Chatbot
+                        participant PAY as Payment
+                        participant ORCH as Orchestrator
+                        participant INV as Inventory
+                        participant BOI as Boiler
+                        participant BWL as Bowl Conv.
+                        participant DIS as Dispenser
+                        participant LFT as Lift
+                        participant DEL as Delivery
+
+                        C->>AI: Order + Preferences
+                        AI->>PAY: Payment Intent
+                        PAY-->>AI: Confirmed
+                        AI->>ORCH: create_job(order_id)
+                        ORCH->>INV: reserve(ingredients)
+                        INV-->>ORCH: OK
+                        ORCH->>BOI: heat_to(temp)
+                        BOI-->>ORCH: temp_ok=1
+                        ORCH->>BWL: place_bowl()
+                        BWL-->>ORCH: bowl_present=1
+                        ORCH->>DIS: dispense_noodles(weight)
+                        DIS-->>ORCH: portion_ok=1
+                        ORCH->>LFT: lower_basket()
+                        ORCH->>LFT: boil(duration)
+                        LFT-->>ORCH: cycle_progress
+                        ORCH->>LFT: raise_basket()
+                        ORCH->>DIS: dispense_soup(volume)
+                        ORCH->>DEL: open_pickup()
+                        DEL-->>ORCH: at_pickup=1
+                        ORCH-->>AI: ready_notification
+                        AI-->>C: Your order is ready!
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAULT RECOVERY -->
+            <section id="faults">
+                <h2>Fault Detection & Recovery</h2>
+                <p class="section-intro">
+                    Comprehensive fault handling ensures system resilience and customer safety.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        flowchart TD
+                        F0[Fault Detected] --> F1{Severity Level}
+
+                        F1 -->|Non-Critical| F2[Log Fault]
+                        F2 --> F3[Retry Operation]
+                        F3 --> F4{Success?}
+                        F4 -->|Yes| F5[Resume Job]
+                        F4 -->|No, Attempt 1| F3
+                        F4 -->|No, Max Retries| F6[Reassign Station]
+
+                        F1 -->|Critical Safety| F7[EMCY Frame]
+                        F7 --> F8[SAFE_STOP All Stations]
+                        F8 --> F9[Cut Power to Motors/Heaters]
+                        F9 --> F10[Notify Maintenance]
+                        F10 --> F11[Manual Intervention]
+                        F11 --> F12[Fault Clear + Reset]
+                        F12 --> F13[System Re-Init]
+
+                        F1 -->|Heartbeat Miss| H1[Mark Station DOWN]
+                        H1 --> H2{Job Transferable?}
+                        H2 -->|Yes| H3[Reassign to Standby]
+                        H2 -->|No| H4[Abort Job, Refund]
+
+                        style F8 fill:#e74c3c,color:#fff
+                        style F9 fill:#e74c3c,color:#fff
+                        style F5 fill:#27ae60,color:#fff
+                    </div>
+                </div>
+
+                <h3>Fault Categories & Response Times</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fault Type</th>
+                            <th>Example</th>
+                            <th>Response Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="status-badge critical">Critical</span></td>
+                            <td>E-Stop, Overtemp, Overcurrent</td>
+                            <td>≤ 200 ms</td>
+                            <td>Immediate power cut, SAFE_STOP</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge high">High</span></td>
+                            <td>Heartbeat miss (×3), Jam detected</td>
+                            <td>≤ 3 s</td>
+                            <td>Station marked DOWN, job reassigned</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge medium">Medium</span></td>
+                            <td>Sensor read error, Timing deviation</td>
+                            <td>≤ 5 s</td>
+                            <td>Retry (max 2×), log incident</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge low">Low</span></td>
+                            <td>Inventory low, Minor quality deviation</td>
+                            <td>≤ 10 s</td>
+                            <td>Alert operator, adjust parameters</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- INVENTORY -->
+            <section id="inventory">
+                <h2>Inventory Management</h2>
+                <p class="section-intro">
+                    Real-time tracking and automatic refill alerts ensure uninterrupted operations.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        flowchart TD
+                        I0[Station Reports Consumption] --> I1[Inventory Service Updates]
+                        I1 --> I2{Below Threshold?}
+                        I2 -->|No| I3[Continue Normal Ops]
+                        I2 -->|Yes| I4[Create Refill Task]
+                        I4 --> I5[Notify Manager via HMI/SMS]
+                        I5 --> I6[Station Enters REFILL Mode]
+                        I6 --> I7[Manager Confirms Refill]
+                        I7 --> I8[Reset Counters]
+                        I8 --> I9[Station Returns READY]
+
+                        style I4 fill:#f39c12,color:#fff
+                        style I9 fill:#27ae60,color:#fff
+                    </div>
+                </div>
+
+                <h3>Tracked Inventory Items</h3>
+                <div class="metrics">
+                    <div class="metric-card">
+                        <h4>Noodles</h4>
+                        <div class="value">Grams</div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Alert at 10kg remaining</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Soup Base</h4>
+                        <div class="value">Milliliters</div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Alert at 5L remaining</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Bowls</h4>
+                        <div class="value">Count</div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Alert at 20 remaining</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Spices</h4>
+                        <div class="value">Portions</div>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Alert at 30 remaining</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QUALITY & LEARNING -->
+            <section id="quality">
+                <h2>Quality Feedback & Learning</h2>
+                <p class="section-intro">
+                    Customer feedback drives continuous improvement through adaptive parameter tuning.
+                </p>
+
+                <div class="flow-container">
+                    <div class="mermaid">
+                        flowchart LR
+                        U[Customer Feedback] --> Q[Quality Monitor]
+                        Q --> P1[Aggregate by Recipe/Time]
+                        P1 --> P2[Calculate Parameter Deltas]
+                        P2 --> P3{Within Safety Bounds?}
+                        P3 -->|Yes| R1[A/B Test Shadow Mode]
+                        P3 -->|No| R2[Hold for Human Review]
+                        R1 --> R3[Monitor Performance]
+                        R3 --> R4{Improved?}
+                        R4 -->|Yes| R5[Roll Out to Production]
+                        R4 -->|No| R6[Revert Changes]
+                        R2 --> R7[Manager Approval Required]
+                        R7 --> R1
+
+                        style R5 fill:#27ae60,color:#fff
+                        style R6 fill:#e74c3c,color:#fff
+                    </div>
+                </div>
+
+                <h3>Feedback Categories</h3>
+                <div class="grid-2">
+                    <div>
+                        <h4>Ratings (1-5 Stars)</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⭐⭐⭐⭐⭐ Excellent - No changes
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⭐⭐⭐⭐ Good - Minor tuning
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⭐⭐⭐ Average - Investigate parameters
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⭐⭐ Poor - Significant adjustment needed
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⭐ Fail - Flag for quality team review
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Specific Flags</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🧂 Too Salty → Reduce soup concentration
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                💧 Too Bland → Increase seasoning
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🍜 Too Dry → Increase soup volume
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                💦 Too Soupy → Decrease soup volume
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🌡️ Temperature Issue → Adjust boiler timing
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Tunable Parameters</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Default</th>
+                            <th>Range</th>
+                            <th>Max Daily Delta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Boil Duration</td>
+                            <td>180 s</td>
+                            <td>150-210 s</td>
+                            <td>±5 s</td>
+                        </tr>
+                        <tr>
+                            <td>Soup Volume</td>
+                            <td>350 ml</td>
+                            <td>300-400 ml</td>
+                            <td>±10 ml</td>
+                        </tr>
+                        <tr>
+                            <td>Spice Amount</td>
+                            <td>5 g</td>
+                            <td>3-8 g</td>
+                            <td>±0.5 g</td>
+                        </tr>
+                        <tr>
+                            <td>Boiler Temp</td>
+                            <td>98 °C</td>
+                            <td>95-100 °C</td>
+                            <td>±1 °C</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- SAFETY -->
+            <section id="safety">
+                <h2>Safety & Security</h2>
+                <p class="section-intro">
+                    Multi-layered safety systems protect operators, customers, and equipment.
+                </p>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <h4>🛑 Hardware Safety</h4>
+                        <ul>
+                            <li>E-stop cuts power to all motors/heaters</li>
+                            <li>Hardware interlocks on all motion systems</li>
+                            <li>Temperature sensors with auto-shutoff</li>
+                            <li>Pressure relief valves on boiler</li>
+                            <li>Physical guards on rotating equipment</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔒 Software Safety</h4>
+                        <ul>
+                            <li>Watchdog timers on all MCUs</li>
+                            <li>CAN bus-off recovery</li>
+                            <li>Message sequence counters</li>
+                            <li>State machine validation</li>
+                            <li>Bounded parameter ranges</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>🔐 Cybersecurity</h4>
+                        <ul>
+                            <li>PCI-compliant payment processing</li>
+                            <li>TLS 1.3 for all external APIs</li>
+                            <li>Role-based access control (RBAC)</li>
+                            <li>Audit logs for all maintenance ops</li>
+                            <li>Air-gapped control network option</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>Safety Certification Target:</strong> The system is designed to meet IEC 61508
+                    (Functional Safety) and ISO 13849 (Safety of Machinery) standards for food processing equipment.
+                </div>
+            </section>
+
+            <!-- OBSERVABILITY -->
+            <section id="observability">
+                <h2>Telemetry & Observability</h2>
+                <p class="section-intro">
+                    Comprehensive monitoring enables proactive maintenance and continuous optimization.
+                </p>
+
+                <h3>Collected Metrics</h3>
+                <div class="grid-2">
+                    <div>
+                        <h4>Per-Station Metrics</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                📊 Cycle times & throughput
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⚡ Motor current & power consumption
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🌡️ Temperature profiles
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🔧 Fault codes & error rates
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                💓 Heartbeat latency
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Per-Job Metrics</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ⏱️ End-to-end latency
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                ✅ Success vs abort rate
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🔄 Retry & reassignment count
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                🎯 Quality score distribution
+                            </li>
+                            <li
+                                style="padding: 0.5rem; background: var(--light); margin: 0.5rem 0; border-radius: 5px;">
+                                📦 Ingredient consumption
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Monitoring Stack</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Technology</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Metrics Collection</td>
+                            <td>Prometheus + Node Exporters</td>
+                            <td>Real-time time-series metrics</td>
+                        </tr>
+                        <tr>
+                            <td>Event Logging</td>
+                            <td>ROS 2 rosbag2</td>
+                            <td>Full message replay capability</td>
+                        </tr>
+                        <tr>
+                            <td>Visualization</td>
+                            <td>Grafana Dashboards</td>
+                            <td>Live KPI monitoring</td>
+                        </tr>
+                        <tr>
+                            <td>Alerting</td>
+                            <td>Prometheus Alertmanager</td>
+                            <td>Threshold-based notifications</td>
+                        </tr>
+                        <tr>
+                            <td>Long-term Storage</td>
+                            <td>PostgreSQL + TimescaleDB</td>
+                            <td>Historical analysis & trends</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- DEPLOYMENT -->
+            <section id="deployment">
+                <h2>Deployment Architecture</h2>
+                <p class="section-intro">
+                    Production-ready deployment with separation between staging and production environments.
+                </p>
+
+                <div class="grid-2">
+                    <div>
+                        <h3>Edge Computing</h3>
+                        <div class="timeline-item">
+                            <strong>Hardware:</strong> Industrial PC or NVIDIA Jetson
+                        </div>
+                        <div class="timeline-item">
+                            <strong>OS:</strong> Ubuntu 22.04 (ROS 2 Humble base)
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Containers:</strong> Docker Compose for all ROS 2 nodes
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Networking:</strong> Isolated CAN subnet + external API gateway
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>MCU Deployment</h3>
+                        <div class="timeline-item">
+                            <strong>Platform:</strong> STM32F4/F7 + FreeRTOS
+                        </div>
+                        <div class="timeline-item">
+                            <strong>OTA:</strong> Firmware updates via CANopen SDO
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Bootloader:</strong> UART fallback for recovery
+                        </div>
+                        <div class="timeline-item">
+                            <strong>Debug:</strong> SWD interface + RTT logging
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Environment Strategy</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Environment</th>
+                            <th>Purpose</th>
+                            <th>Configuration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="status-badge medium">Staging</span></td>
+                            <td>Pre-production testing & CI/CD</td>
+                            <td>Virtual station simulators (same OD)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge critical">Production</span></td>
+                            <td>Live customer orders</td>
+                            <td>Real hardware stations + full monitoring</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-badge low">Development</span></td>
+                            <td>Local developer testing</td>
+                            <td>Docker Compose + mocked stations</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ACCEPTANCE CRITERIA -->
+            <section id="acceptance">
+                <h2>Go/No-Go Acceptance Criteria</h2>
+                <p class="section-intro">
+                    The system must meet all critical criteria before production deployment.
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Target</th>
+                            <th>Test Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>End-to-End Latency</td>
+                            <td>&lt; 3 min median</td>
+                            <td>100 consecutive orders in staging</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Success Rate</td>
+                            <td>&gt; 95%</td>
+                            <td>500 orders with fault injection</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>E-Stop Response</td>
+                            <td>≤ 200 ms</td>
+                            <td>Hardware timing measurement</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Heartbeat Miss Detection</td>
+                            <td>3× miss → safe halt</td>
+                            <td>Simulated node failures</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Jam Recovery</td>
+                            <td>Auto-recover in ≤ 2 retries</td>
+                            <td>Induced jams on dispenser</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Inventory Alert</td>
+                            <td>≤ 5 s from threshold</td>
+                            <td>Simulated consumption spike</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Feedback Loop</td>
+                            <td>Parameters within guardrails</td>
+                            <td>1000 feedback samples processed</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td>Payment Security</td>
+                            <td>PCI-compliant</td>
+                            <td>Third-party security audit</td>
+                            <td><span class="status-badge medium">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- NEXT STEPS -->
+            <section id="next-steps">
+                <h2>Next Steps & Deliverables</h2>
+                <p class="section-intro">
+                    Recommended artifacts for immediate implementation and testing.
+                </p>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <h4>1️⃣ Behavior Tree Implementation</h4>
+                        <ul>
+                            <li>BehaviorTree.CPP XML for station_coordinator</li>
+                            <li>Sequence nodes for cook flow</li>
+                            <li>Fallback nodes for fault recovery</li>
+                            <li>Decorator nodes for timing/retries</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>2️⃣ CANopen Configuration</h4>
+                        <ul>
+                            <li>Complete Object Dictionary (EDS files)</li>
+                            <li>PDO mapping for each station type</li>
+                            <li>EMCY and heartbeat setup</li>
+                            <li>SDO server configuration</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>3️⃣ ROS 2 Package Skeleton</h4>
+                        <ul>
+                            <li>order_manager node structure</li>
+                            <li>inventory_core with SQL backend</li>
+                            <li>quality_monitor feedback aggregation</li>
+                            <li>Launch files & config YAMLs</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4>4️⃣ Test Harness</h4>
+                        <ul>
+                            <li>Station simulators publishing TPDOs</li>
+                            <li>Fault injection framework</li>
+                            <li>Heartbeat timing tests</li>
+                            <li>End-to-end integration tests</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Udon System Project | ROS 2 + CANopen Integration</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#3498db',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#2c3e50',
+                lineColor: '#2c3e50',
+                secondaryColor: '#e74c3c',
+                tertiaryColor: '#f39c12',
+                background: '#ffffff',
+                mainBkg: '#ecf0f1',
+                secondBkg: '#d5d8dc'
+            },
+            flowchart: {
+                curve: 'basis',
+                padding: 20
+            },
+            sequence: {
+                diagramMarginX: 50,
+                diagramMarginY: 10,
+                actorMargin: 50,
+                width: 150,
+                height: 65,
+                boxMargin: 10,
+                boxTextMargin: 5,
+                noteMargin: 10,
+                messageMargin: 35
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active nav item on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
